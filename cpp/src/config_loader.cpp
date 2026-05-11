@@ -85,6 +85,11 @@ bool config_loader::parse_config(const std::vector<std::string>& lines, const ch
         return false;
     }
 
+    if(time > 3600){
+        logger->error("[config_loader.cpp:validate_config]: <{}> Simulation time more then 3600!", filename, tokens[0][0]);
+        return false;
+    }
+
     // 4. Check second line. She must be have type of model and N parameters
 
     // 4.1 Check model existing
@@ -205,9 +210,6 @@ bool config_loader::parse_config(const std::vector<std::string>& lines, const ch
     // fill general parameters
     cfg.simulation_time = time;
     cfg.model_type = model_type;
-
-    logger->info("\n\n\n");
-
 
     return true;
 
