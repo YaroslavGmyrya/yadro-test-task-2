@@ -9,8 +9,6 @@
 
     1. Timestamps: time, when receive packet
     2. Packet_sizes: size of receive packet
-
-    I union this parameters in structure for comfortable work
 */
 struct model_out{
     std::vector<double> timestamps;
@@ -18,7 +16,7 @@ struct model_out{
 };
 
 /* Interface */
-class model{
+class Imodel{
     public:
         /*
             Interface define method, but doesn't implement it. This method is implemented by child classes.
@@ -28,13 +26,13 @@ class model{
 };
 
 /* This class implemeted equal traffic model and inherited from class "model" */
-class equal_model : public model{
+class equal_model : public Imodel{
     protected:
         model_out run_bench(const config& cfg) override;
 };
 
 /* This class implemeted poisson traffic model and inherited from class "model" */
-class poisson_model : public model{
+class poisson_model : public Imodel{
     protected:
         model_out run_bench(const config& cfg) override;
 };

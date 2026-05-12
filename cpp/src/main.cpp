@@ -9,7 +9,7 @@ int main(int argc, char* argv[]){
     }
 
     std::string input_filename(argv[1]);
-    std::string output_filename("sim_result.txt");
+    std::string output_filename("./results/sim_result.txt");
 
     /*Create model object*/
     Model model;

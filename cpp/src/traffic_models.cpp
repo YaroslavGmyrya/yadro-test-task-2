@@ -11,7 +11,7 @@ bool Model::write_to_file(const char* filename, const model_out& data){
     new_filename = new_filename.substr(0, new_filename.size() - 4);
 
     //add type of model (for python side)
-    new_filename = new_filename + "_" + cfg.model_type + ".txt";
+    new_filename = new_filename + "_" + cfg.model_type + ".csv";
 
     // check sizes 
     if(data.timestamps.size() != data.packet_sizes.size()){
@@ -47,12 +47,11 @@ model_out equal_model::run_bench(const config& cfg){
     // 2.create output struct
     model_out output_data;
     
-    //I use reserve to avoid memmory allocation and copying
     output_data.packet_sizes.reserve(count_of_packets);
     output_data.timestamps.reserve(count_of_packets);
     
     // 3.fill output struct
-    for(int time = 0; time < simulation_time; time+=pause_bw_packets){
+    for(double time = 0; time < simulation_time; time+=pause_bw_packets){
         output_data.packet_sizes.push_back(packets_size);
         output_data.timestamps.push_back(time);
     }
@@ -64,7 +63,7 @@ model_out poisson_model::run_bench(const config& cfg){
     // 1.get model parameters
     double simulation_time = cfg.simulation_time;
     double poisson_lambda = cfg.poisson_parameters.poisson_lambda;
-    int exp_lambda = cfg.poisson_parameters.exp_lambda;
+    double exp_lambda = cfg.poisson_parameters.exp_lambda;
 
     // 2.create generators
     std::random_device rd;
@@ -76,14 +75,13 @@ model_out poisson_model::run_bench(const config& cfg){
     //3. fill output struct
     model_out model_data;
 
-    for(int time = 0; time < simulation_time;){
+    for(double time = 0; time < simulation_time;){
         model_data.packet_sizes.push_back((int)exp_dist(gen));
         model_data.timestamps.push_back(time);
 
         time += poisson_dist(gen);
     }
 
-    
     return model_data;
 }
 
@@ -100,7 +98,7 @@ void Model::run_model(const char* config_filename, const char* output_filename){
         simulation_results = equal_model::run_bench(cfg);
     } 
     else if(cfg.model_type == "poisson"){
-        simulation_results = equal_model::run_bench(cfg);
+        simulation_results = poisson_model::run_bench(cfg);
     }
 
     // 3. Write bench results to file
