@@ -42,17 +42,17 @@ print(f"AVG packet pause: {avg_packet_pause}")
 plt.subplot(1,2,1)
 plt.hist(packet_pause, bins=50)
 plt.xlabel("pause")
-plt.ylabel("P(pause)")
+plt.ylabel("Count")
 plt.title("Hist of packets pause")
 plt.grid()
 
 # 7. Hist of packets size
 plt.subplot(1,2,2)
 plt.hist(packets_size, bins=50)
-plt.xlabel("packet size")
-plt.ylabel("P(packet size)")
+plt.xlabel("size")
+plt.ylabel("Count")
 plt.title("Hist of packets size")
 plt.grid()
 plt.show()
 
-print
+print("\n\n")
