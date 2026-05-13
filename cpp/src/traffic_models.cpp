@@ -66,9 +66,6 @@ model_out poisson_model::run_bench(const config& cfg){
     double exp_lambda = cfg.poisson_parameters.exp_lambda;
 
     // 2.create generators
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
     std::exponential_distribution<double> exp_dist(exp_lambda);
     std::poisson_distribution<int> poisson_dist(poisson_lambda);
 

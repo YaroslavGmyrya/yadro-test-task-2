@@ -2,6 +2,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
+#include <random>
 #include "../include/config_loader.hpp"
 
 /*
@@ -18,11 +19,13 @@ struct model_out{
 /* Interface */
 class Imodel{
     public:
+        Imodel() : gen(std::random_device{}()) {}
         /*
             Interface define method, but doesn't implement it. This method is implemented by child classes.
             If child class doesn't implement this child, compiler throw error
         */
         virtual model_out run_bench(const config& cfg) = 0;
+        std::mt19937 gen;
 };
 
 /* This class implemeted equal traffic model and inherited from class "model" */
@@ -60,7 +63,8 @@ class Model : public equal_model, poisson_model{
         model_out model_data;                       // this struct describe data, which bench return
         std::shared_ptr<spdlog::logger> logger;     // object of spdlog library, which write logs in file
         config_loader cl;                           // object, which read, validate and parse config file
-        config cfg;                                 // struct, which storage model parameters             
+        config cfg;                                 // struct, which storage model parameters        
+
 
         /* This method write to file resutls of model work */
         bool write_to_file(const char* filename, const model_out& data);
